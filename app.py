@@ -236,6 +236,14 @@ class AssignmentResource(Resource):
         db.session.commit()
         return {"message": f"Assignment with id {assign_id} deleted."}, 200
     
+# Adding each resource to the API with their endpoints
+api.add_resource(IndexResource, '/')
+api.add_resource(UsersListResource, '/users')
+api.add_resource(UserResource, '/users/<int:user_id>')
+api.add_resource(PickupRequestsListResource, '/pickup_requests')
+api.add_resource(PickupRequestResource, '/pickup_requests/<int:pr_id>')
+api.add_resource(AssignmentsListResource, '/assignments')
+api.add_resource(AssignmentResource, '/assignments/<int:assign_id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
