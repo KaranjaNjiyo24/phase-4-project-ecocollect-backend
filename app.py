@@ -22,6 +22,11 @@ migrate = Migrate(app, db)
 # Initialize Flask-RESTful API
 api = Api(app)
 
+## Defining Resource Classes
+class IndexResource(Resource):
+    def get(self):
+        return {"message": "Welcome to EcoCollect API!"}, 200
+    
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
