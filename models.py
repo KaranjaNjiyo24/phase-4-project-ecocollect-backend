@@ -30,3 +30,17 @@ class PickupRequest(db.Model):
 
     def __repr__(self):
         return f"<PickupRequest {self.id} user_id={self.user_id}>"
+    
+class Assignment(db.Model):
+    __tablename__ = 'assignments'
+
+    id = db.Column(db.Integer, primary_key=True)
+    status = db.Column(db.String, default="pending")
+    # A user-submittable attribute for scheduling (using string for simplicity, though DateTime is an option)
+    scheduled_date = db.Column(db.String, nullable=True)
+    # Foreign keys to link the collector and the pickup request.
+    collector_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    pickup_request_id = db.Column(db.Integer, db.ForeignKey('pickup_requests.id'))
+
+    def __repr__(self):
+        return f"<Assignment {self.id} status={self.status} date={self.scheduled_date}>"
