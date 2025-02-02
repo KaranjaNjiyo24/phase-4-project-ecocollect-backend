@@ -27,6 +27,28 @@ class IndexResource(Resource):
     def get(self):
         return {"message": "Welcome to EcoCollect API!"}, 200
     
+# User Resources
+class UsersListResource(Resource):
+    def get(self):
+        users = User.query.all()
+        return [{"id": user.id, "username": user.username, "role": user.role} for user in users], 200
+
+    def post(self):
+        data = request.get_json()
+        if not data:
+            return {"error": "No input data provided"}, 400
+
+        username = data.get("username")
+        role = data.get("role", "resident")  # Default to "resident" if not provided
+
+        if not username:
+            return {"error": "Username is required"}, 400
+
+        new_user = User(username=username, role=role)
+        db.session.add(new_user)
+        db.session.commit()
+        return {"id": new_user.id, "username": new_user.username, "role": new_user.role}, 201
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
