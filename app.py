@@ -5,14 +5,15 @@ from flask_restful import Resource, Api, abort
 from flask_migrate import Migrate
 from models import db, User, PickupRequest, Assignment
 from flask_cors import CORS
+from dotenv import load_dotenv
+load_dotenv()
 
 # Initialize the Flask application
 app = Flask(__name__)
 CORS(app)
 
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 # SQLite database 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'ecocollect.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize the database and migration modules
