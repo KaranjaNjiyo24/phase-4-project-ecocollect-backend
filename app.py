@@ -113,6 +113,44 @@ class PickupRequestsListResource(Resource):
             "resident_id": new_pr.user_id
         }, 201
 
+class PickupRequestResource(Resource):
+    def get(self, pr_id):
+        pr = PickupRequest.query.get(pr_id)
+        if not pr:
+            abort(404, message=f"PickupRequest with id {pr_id} not found")
+        return {
+            "id": pr.id,
+            "description": pr.description,
+            "location": pr.location,
+            "resident_id": pr.user_id
+        }, 200
+
+    def put(self, pr_id):
+        pr = PickupRequest.query.get(pr_id)
+        if not pr:
+            abort(404, message=f"PickupRequest with id {pr_id} not found")
+        data = request.get_json()
+        if not data:
+            return {"error": "No input data provided"}, 400
+
+        pr.description = data.get("description", pr.description)
+        pr.location = data.get("location", pr.location)
+        pr.user_id = data.get("user_id", pr.user_id)
+        db.session.commit()
+        return {
+            "id": pr.id,
+            "description": pr.description,
+            "location": pr.location,
+            "resident_id": pr.user_id
+        }, 200
+
+    def delete(self, pr_id):
+        pr = PickupRequest.query.get(pr_id)
+        if not pr:
+            abort(404, message=f"PickupRequest with id {pr_id} not found")
+        db.session.delete(pr)
+        db.session.commit()
+        return {"message": f"PickupRequest with id {pr_id} deleted."}, 200
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
