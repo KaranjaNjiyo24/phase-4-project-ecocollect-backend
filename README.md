@@ -57,7 +57,7 @@ This API is designed to work seamlessly with a React frontend, and it is deploye
 
    ```bash
    git clone git@github.com:KaranjaNjiyo24/phase-4-project-ecocollect-backend.git
-   cd ecocollect-backend
+   cd phase-4-project-ecocollect-backend
 Create and Activate a Virtual Environment
 
 bash
