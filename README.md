@@ -60,82 +60,87 @@ This API is designed to work seamlessly with a React frontend, and it is deploye
    cd phase-4-project-ecocollect-backend
 Create and Activate a Virtual Environment
 
-bash
+```bash
 Copy
 pipenv install
 pipenv shell
+```
 Install Dependencies
 
 
-bash
-Copy
+```bash
 pipenv install flask flask_sqlalchemy flask_migrate flask_restful flask_jwt_extended flask-cors
+```
 Initialize the Database
 
-bash
-Copy
+
+```bash
 export FLASK_APP=app.py
 flask db init
 flask db migrate -m "Initial migration"
 flask db upgrade
+```
 Usage
 To start the development server, run:
 
-bash
-Copy
+```bash
 python app.py
+```
 The API will be available at [Eco-collect](https://phase-4-project-ecocollect-backend-1.onrender.com/).
 
-API Endpoints
+## API Endpoints
 Public Endpoints
-GET /
-Returns a welcome message.
+- GET /
+  Returns a welcome message.
 
-GET /users
-Retrieve a list of users.
+- GET /users
+  Retrieve a list of users.
 
-GET /users/<user_id>
-Retrieve a specific user.
+- GET /users/<user_id>
+  Retrieve a specific user.
 
-PUT /users/<user_id>
-Update a user.
+- PUT /users/<user_id>
+  Update a user.
 
-DELETE /users/<user_id>
-Delete a user.
+- DELETE /users/<user_id>
+  Delete a user.
 
-GET /pickup_requests
-Retrieve all pickup requests.
+- GET /pickup_requests
+  Retrieve all pickup requests.
 
-POST /pickup_requests
-Create a new pickup request.
+- POST /pickup_requests
+  Create a new pickup request.
 
-GET /assignments
-Retrieve all assignments.
+- GET /assignments
+  Retrieve all assignments.
 
-POST /assignments
-Create a new assignment.
+- POST /assignments
+  Create a new assignment.
+---
 
 For additional endpoints and details, please refer to the source code.
 
-Include the token in your request headers:
 
-makefile
+```makefile
 Deployment
+```
 This backend is deployed on Render. You can access the live API at:
 
 [https://ecocollect-backend.onrender.com](https://phase-4-project-ecocollect-backend-1.onrender.com/)
 
-Coming soon 
-Authentication
-The API uses JWT for authentication.
+---
+## Coming soon 
+- Authentication
+The API to use JWT for authentication.
 
-Contributing
+## Contributing
 Contributions are welcome! Please follow these steps:
 
-Fork the repository.
-Create a new branch (git checkout -b feature/YourFeature).
-Commit your changes (git commit -m 'Add new feature').
-Push to the branch (git push origin feature/YourFeature).
-Open a pull request.
-License
+- Fork the repository.
+- Create a new branch (git checkout -b feature/YourFeature).
+- Commit your changes (git commit -m 'Add new feature').
+- Push to the branch (git push origin feature/YourFeature).
+- Open a pull request.
+
+## License
 This project is licensed under the MIT License. See the LICENSE file for details.
