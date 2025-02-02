@@ -196,6 +196,46 @@ class AssignmentsListResource(Resource):
             "pickup_request_id": new_assignment.pickup_request_id
         }, 201
 
+class AssignmentResource(Resource):
+    def get(self, assign_id):
+        assign = Assignment.query.get(assign_id)
+        if not assign:
+            abort(404, message=f"Assignment with id {assign_id} not found")
+        return {
+            "id": assign.id,
+            "status": assign.status,
+            "scheduled_date": assign.scheduled_date,
+            "collector_id": assign.collector_id,
+            "pickup_request_id": assign.pickup_request_id
+        }, 200
+
+    def put(self, assign_id):
+        assign = Assignment.query.get(assign_id)
+        if not assign:
+            abort(404, message=f"Assignment with id {assign_id} not found")
+        data = request.get_json()
+        if not data:
+            return {"error": "No input data provided"}, 400
+
+        assign.status = data.get("status", assign.status)
+        assign.scheduled_date = data.get("scheduled_date", assign.scheduled_date)
+        db.session.commit()
+        return {
+            "id": assign.id,
+            "status": assign.status,
+            "scheduled_date": assign.scheduled_date,
+            "collector_id": assign.collector_id,
+            "pickup_request_id": assign.pickup_request_id
+        }, 200
+
+    def delete(self, assign_id):
+        assign = Assignment.query.get(assign_id)
+        if not assign:
+            abort(404, message=f"Assignment with id {assign_id} not found")
+        db.session.delete(assign)
+        db.session.commit()
+        return {"message": f"Assignment with id {assign_id} deleted."}, 200
+    
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
