@@ -39,7 +39,7 @@ class UsersListResource(Resource):
             return {"error": "No input data provided"}, 400
 
         username = data.get("username")
-        role = data.get("role", "resident")  # Default to "resident" if not provided
+        role = data.get("role", "resident")  # Defaults to "resident" if not provided
 
         if not username:
             return {"error": "Username is required"}, 400
@@ -48,6 +48,34 @@ class UsersListResource(Resource):
         db.session.add(new_user)
         db.session.commit()
         return {"id": new_user.id, "username": new_user.username, "role": new_user.role}, 201
+    
+class UserResource(Resource):
+    def get(self, user_id):
+        user = User.query.get(user_id)
+        if not user:
+            abort(404, message=f"User with id {user_id} not found")
+        return {"id": user.id, "username": user.username, "role": user.role}, 200
+
+    def put(self, user_id):
+        user = User.query.get(user_id)
+        if not user:
+            abort(404, message=f"User with id {user_id} not found")
+        data = request.get_json()
+        if not data:
+            return {"error": "No input data provided"}, 400
+
+        user.username = data.get("username", user.username)
+        user.role = data.get("role", user.role)
+        db.session.commit()
+        return {"id": user.id, "username": user.username, "role": user.role}, 200
+
+    def delete(self, user_id):
+        user = User.query.get(user_id)
+        if not user:
+            abort(404, message=f"User with id {user_id} not found")
+        db.session.delete(user)
+        db.session.commit()
+        return {"message": f"User with id {user_id} deleted."}, 200
 
 
 if __name__ == '__main__':
