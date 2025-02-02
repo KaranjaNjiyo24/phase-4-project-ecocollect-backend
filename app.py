@@ -69,6 +69,9 @@ class UserResource(Resource):
         user.role = data.get("role", user.role)
         db.session.commit()
         return {"id": user.id, "username": user.username, "role": user.role}, 200
+    
+    def patch(self, user_id):
+        return self.put(user_id)
 
     def delete(self, user_id):
         user = User.query.get(user_id)
@@ -145,6 +148,9 @@ class PickupRequestResource(Resource):
             "resident_id": pr.user_id
         }, 200
 
+    def patch(self, pr_id):
+        return self.put(pr_id)
+    
     def delete(self, pr_id):
         pr = PickupRequest.query.get(pr_id)
         if not pr:
@@ -228,6 +234,9 @@ class AssignmentResource(Resource):
             "collector_id": assign.collector_id,
             "pickup_request_id": assign.pickup_request_id
         }, 200
+    
+    def patch(self, assign_id):
+        return self.put(assign_id)
 
     def delete(self, assign_id):
         assign = Assignment.query.get(assign_id)
