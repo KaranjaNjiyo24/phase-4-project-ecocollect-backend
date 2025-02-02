@@ -77,6 +77,42 @@ class UserResource(Resource):
         db.session.commit()
         return {"message": f"User with id {user_id} deleted."}, 200
 
+# Pickup Request resource
+class PickupRequestsListResource(Resource):
+    def get(self):
+        pickup_requests = PickupRequest.query.all()
+        result = []
+        for pr in pickup_requests:
+            result.append({
+                "id": pr.id,
+                "description": pr.description,
+                "location": pr.location,
+                "resident_id": pr.user_id
+            })
+        return result, 200
+
+    def post(self):
+        data = request.get_json()
+        if not data:
+            return {"error": "No input data provided"}, 400
+
+        description = data.get("description")
+        location = data.get("location")
+        user_id = data.get("user_id")
+
+        if not (description and location and user_id):
+            return {"error": "description, location, and user_id are required"}, 400
+
+        new_pr = PickupRequest(description=description, location=location, user_id=user_id)
+        db.session.add(new_pr)
+        db.session.commit()
+        return {
+            "id": new_pr.id,
+            "description": new_pr.description,
+            "location": new_pr.location,
+            "resident_id": new_pr.user_id
+        }, 201
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
