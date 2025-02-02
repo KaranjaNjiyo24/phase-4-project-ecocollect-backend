@@ -151,6 +151,51 @@ class PickupRequestResource(Resource):
         db.session.delete(pr)
         db.session.commit()
         return {"message": f"PickupRequest with id {pr_id} deleted."}, 200
+    
+# Assignment resource
+class AssignmentsListResource(Resource):
+    def get(self):
+        assignments = Assignment.query.all()
+        result = []
+        for assign in assignments:
+            result.append({
+                "id": assign.id,
+                "status": assign.status,
+                "scheduled_date": assign.scheduled_date,
+                "collector_id": assign.collector_id,
+                "pickup_request_id": assign.pickup_request_id
+            })
+        return result, 200
+
+    def post(self):
+        data = request.get_json()
+        if not data:
+            return {"error": "No input data provided"}, 400
+
+        collector_id = data.get("collector_id")
+        pickup_request_id = data.get("pickup_request_id")
+        status = data.get("status", "pending")
+        scheduled_date = data.get("scheduled_date")
+
+        if not (collector_id and pickup_request_id):
+            return {"error": "collector_id and pickup_request_id are required"}, 400
+
+        new_assignment = Assignment(
+            collector_id=collector_id,
+            pickup_request_id=pickup_request_id,
+            status=status,
+            scheduled_date=scheduled_date
+        )
+        db.session.add(new_assignment)
+        db.session.commit()
+        return {
+            "id": new_assignment.id,
+            "status": new_assignment.status,
+            "scheduled_date": new_assignment.scheduled_date,
+            "collector_id": new_assignment.collector_id,
+            "pickup_request_id": new_assignment.pickup_request_id
+        }, 201
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
