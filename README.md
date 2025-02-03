@@ -128,6 +128,9 @@ This backend is deployed on Render. You can access the live API at:
 
 [https://ecocollect-backend.onrender.com](https://phase-4-project-ecocollect-backend-1.onrender.com/)
 
+## Frontend Repo
+[Ecocollect-Frontend](https://github.com/KaranjaNjiyo24/phase-4-project-ecocollect-frontend/)
+
 ---
 ## Coming soon 
 - Authentication
